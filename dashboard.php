@@ -1,10 +1,13 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION['barber_id'])) {
     header("Location: login.php");
     exit();
 }
 include 'conexao.php';
+include 'header.php';
 
 $barber_id = $_SESSION['barber_id'];
 
@@ -23,14 +26,7 @@ $stmt->bind_param("i", $barber_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - Canuto Barber</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body class="container mt-5">
+
     <h1>Dashboard do Barbeiro</h1>
     <a href="logout.php" class="btn btn-danger mb-3">Sair</a>
     <a href="agendamentos.php" class="btn btn-secondary mb-3">Gerenciar Todos Agendamentos</a>
@@ -62,5 +58,5 @@ $result = $stmt->get_result();
         <?php endwhile; ?>
         </tbody>
     </table>
-</body>
-</html>
+
+<?php include 'footer.php'; ?>
